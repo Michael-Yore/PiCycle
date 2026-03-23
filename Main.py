@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 from sense_hat import SenseHat
 from picamera2 import Picamera2, Preview
