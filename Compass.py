@@ -96,23 +96,22 @@ compass8 = [
 ]
 
 while True:
-    #sleep(0.5)
     degrees = sense.get_compass()
     direction = round(degrees)
     if degrees<45:
-        sense.set_pixels(compass2)  #2  #8
+        sense.set_pixels(compass2)
     elif degrees<90:
-        sense.set_pixels(compass1)  #1  #7
+        sense.set_pixels(compass1)
     elif degrees<135:
-        sense.set_pixels(compass8)  #8  #6
+        sense.set_pixels(compass8)
     elif degrees<180:
-        sense.set_pixels(compass7)  #7  #5
+        sense.set_pixels(compass7)
     elif degrees<225:
-        sense.set_pixels(compass6)  #6  #4
+        sense.set_pixels(compass6)
     elif degrees<270:
-        sense.set_pixels(compass5)  #5  #3
+        sense.set_pixels(compass5)
     elif degrees<315:
-        sense.set_pixels(compass4)  #4  #2
+        sense.set_pixels(compass4)
     elif degrees<360:
-        sense.set_pixels(compass3)  #3  #1
+        sense.set_pixels(compass3)
     
