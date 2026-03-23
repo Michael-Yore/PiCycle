@@ -1,28 +1,3 @@
-#!/usr/bin/env python3
-"""
-Crash Detection Dashcam - Raspberry Pi Sense HAT + Pi Camera
-=============================================================
-
-Uses rpicam-vid via subprocess instead of Picamera2, avoiding all
-import/detection issues. Only requires sense-hat and standard library.
-
-Behaviour:
-  - Records continuously to a rolling set of short video segments
-  - On confirmed crash, stitches the last 60s of segments into one clip
-  - Crash confirmed only when BOTH conditions are true:
-      1. Accelerometer impact exceeds ACCEL_THRESHOLD G
-      2. Orientation change exceeds ORIENTATION_CHANGE_THRESHOLD degrees
-
-LED feedback:
-  Solid green   - monitoring
-  Flashing red  - crash detected, saving
-  Solid blue    - clip saved
-  Solid yellow  - error
-
-Requirements:
-  sudo apt install -y python3-sense-hat
-  (rpicam-vid is pre-installed on Raspberry Pi OS)
-"""
 
 import os
 import time
@@ -35,8 +10,6 @@ from datetime import datetime
 from pathlib import Path
 
 from sense_hat import SenseHat
-
-# ── Configuration ─────────────────────────────────────────────────────────────
 
 # Where crash clips and temp segments are stored
 SAVE_DIR = Path("/home/igneus/crash_clips")
@@ -73,8 +46,6 @@ POST_CRASH_SECONDS = 10
 # Sensor polling rate
 POLL_INTERVAL = 0.05  # 20 Hz
 
-# ── Logging ───────────────────────────────────────────────────────────────────
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s  %(levelname)-8s  %(message)s",
@@ -82,7 +53,6 @@ logging.basicConfig(
 )
 log = logging.getLogger("crash_cam")
 
-# ── LED helpers ───────────────────────────────────────────────────────────────
 
 GREEN  = (0,   200, 0  )
 RED    = (220, 0,   0  )
@@ -103,7 +73,6 @@ def led_flash(sense, colour, times=20, hz=4):
         time.sleep(interval)
 
 
-# ── Orientation history ───────────────────────────────────────────────────────
 
 class OrientationHistory:
     """Keeps a timestamped rolling history of pitch and roll readings."""
@@ -140,7 +109,6 @@ class OrientationHistory:
         return max(angular_range(pitches), angular_range(rolls))
 
 
-# ── Rolling segment manager ───────────────────────────────────────────────────
 
 class SegmentManager:
     """
@@ -239,9 +207,6 @@ class SegmentManager:
                     log.warning("Segment missing during stitch: %s", seg.name)
 
         return total
-
-
-# ── Main CrashCam ─────────────────────────────────────────────────────────────
 
 class CrashCam:
 
@@ -392,8 +357,6 @@ class CrashCam:
             self.sense.clear()
             log.info("CrashCam stopped.")
 
-
-# ── Entry point ───────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
     cam = CrashCam()
