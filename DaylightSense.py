@@ -1,39 +1,17 @@
 #!/usr/bin/env python3
-"""
-Daylight Sensor for Raspberry Pi Sense HAT
-Uses the TCS34725 colour/light sensor to read ambient brightness.
- 
-Behaviour:
-  - Bright room  → LED matrix OFF
-  - Dark room    → LED matrix glows bright white
- 
-Auto-calibrates on startup so it adapts to your environment.
-"""
- 
 import time
 import math
 from sense_hat import SenseHat
  
-# ── Tuning constants ──────────────────────────────────────────────────────────
- 
 SAMPLE_INTERVAL   = 0.3   # seconds between updates
 SMOOTHING_SAMPLES = 5     # rolling average window size
  
-# Glow colour in the dark (warm white)
 GLOW_COLOUR = (255, 220, 180)
- 
-# ── Sense HAT setup ───────────────────────────────────────────────────────────
  
 sense = SenseHat()
 sense.low_light = False
  
-# ── Raw sensor read ───────────────────────────────────────────────────────────
- 
 def read_clear():
-    """
-    Read the raw 'clear' channel (0-255) from the colour sensor.
-    Higher value = more ambient light.
-    """
     try:
         # Sense HAT V2
         r, g, b, clear = sense.colour.colour
@@ -56,10 +34,6 @@ def read_clear():
 # ── Calibration ───────────────────────────────────────────────────────────────
  
 def calibrate():
-    """
-    Sample the sensor for 3 seconds to establish the ambient light baseline.
-    Returns (dark_threshold, bright_threshold).
-    """
     print("Calibrating - please keep the room at its CURRENT brightness...")
  
     # Flash blue to signal calibration
@@ -98,14 +72,6 @@ def calibrate():
 # ── Mapping: clear value -> LED brightness ────────────────────────────────────
  
 def clear_to_brightness(clear_val, dark_thresh, bright_thresh):
-    """
-    Map a raw clear sensor value to LED brightness.
- 
-    HIGH clear value (bright room) -> LOW  LED brightness (off)
-    LOW  clear value (dark  room)  -> HIGH LED brightness (glowing)
- 
-    Uses an inverted square-root curve for a natural feel.
-    """
     clamped = max(dark_thresh, min(bright_thresh, clear_val))
  
     span = bright_thresh - dark_thresh
