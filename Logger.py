@@ -1,22 +1,4 @@
 #!/usr/bin/env python3
-"""
-Journey Logger - Raspberry Pi Sense HAT
-========================================
-
-Tracks journey time using the Sense HAT joystick and LED matrix.
-
-Usage:
-  - Press the joystick MIDDLE button to START a journey
-  - Press the joystick MIDDLE button again to STOP the journey
-  - The journey duration is then scrolled across the LED matrix
-  - Press joystick UP/DOWN to scroll through past journeys
-  - Press joystick LEFT to go back to the main screen
-
-LED colours:
-  Solid green   - ready / idle
-  Solid red     - journey in progress
-  Scrolling blue text - displaying journey time
-"""
 
 import time
 import threading
@@ -26,7 +8,6 @@ from sense_hat import SenseHat
 sense = SenseHat()
 sense.clear()
 
-# ── Colours ───────────────────────────────────────────────────────────────────
 
 GREEN  = (0,   200, 0  )
 RED    = (200, 0,   0  )
@@ -34,7 +15,6 @@ BLUE   = (0,   100, 255)
 WHITE  = (200, 200, 200)
 OFF    = (0,   0,   0  )
 
-# ── State ─────────────────────────────────────────────────────────────────────
 
 journey_active    = False
 journey_start     = None
@@ -42,8 +22,6 @@ journey_log       = []   # list of (start_datetime, duration_timedelta)
 current_view      = "idle"   # idle | recording | review
 review_index      = 0
 stop_ticker       = threading.Event()
-
-# ── Helpers ───────────────────────────────────────────────────────────────────
 
 def format_duration(td):
     """Format a timedelta as HH:MM:SS string."""
@@ -76,7 +54,6 @@ def led_solid(colour):
     sense.set_pixels([colour] * 64)
 
 
-# ── Live journey ticker ───────────────────────────────────────────────────────
 
 def live_ticker():
     """
@@ -100,7 +77,6 @@ def live_ticker():
         stop_ticker.wait(timeout=10)
 
 
-# ── Journey control ───────────────────────────────────────────────────────────
 
 def start_journey():
     global journey_active, journey_start, current_view
@@ -150,7 +126,6 @@ def display_journey(index):
     led_solid(OFF)
 
 
-# ── Idle screen ───────────────────────────────────────────────────────────────
 
 def show_idle():
     """Show a green ready screen with a small arrow indicator."""
@@ -160,7 +135,6 @@ def show_idle():
     print("Ready. Press joystick centre to start a journey.")
 
 
-# ── Input handling ────────────────────────────────────────────────────────────
 
 def handle_joystick(event):
     global current_view, review_index
@@ -197,8 +171,6 @@ def handle_joystick(event):
             stop_journey()
         show_idle()
 
-
-# ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
     print("=" * 45)
