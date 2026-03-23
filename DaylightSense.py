@@ -31,7 +31,6 @@ def read_clear():
     return int((colour.red + colour.green + colour.blue) / 3)
  
  
-# ── Calibration ───────────────────────────────────────────────────────────────
  
 def calibrate():
     print("Calibrating - please keep the room at its CURRENT brightness...")
@@ -69,7 +68,6 @@ def calibrate():
     return dark_thresh, bright_thresh
  
  
-# ── Mapping: clear value -> LED brightness ────────────────────────────────────
  
 def clear_to_brightness(clear_val, dark_thresh, bright_thresh):
     clamped = max(dark_thresh, min(bright_thresh, clear_val))
@@ -89,14 +87,12 @@ def clear_to_brightness(clear_val, dark_thresh, bright_thresh):
     return int(round(curved * 255))
  
  
-# ── Pixel colour helper ───────────────────────────────────────────────────────
  
 def make_pixel(brightness):
     factor = brightness / 255.0
     return tuple(int(c * factor) for c in GLOW_COLOUR)
  
  
-# ── Main loop ─────────────────────────────────────────────────────────────────
  
 def main():
     print("=" * 50)
