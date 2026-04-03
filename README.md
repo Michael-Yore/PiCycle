@@ -14,7 +14,7 @@ In order to get the main script to run at boot, we decided to use sytemd per the
 The following are the exact steps we took:
 1) From terminal, run this command to edit sensemenu.service:
    sudo nano /etc/systemd/system/sensemenu.service
-3) Paste the following, replacing 'igneus' with your username:
+2) Paste the following, replacing 'igneus' with your username:
    [Unit]
   Description=Sense HAT Menu App
   After=multi-user.target
