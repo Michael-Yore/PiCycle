@@ -35,4 +35,4 @@ WantedBy=multi-user.target
   sudo systemctl daemon-reexec
   sudo systemctl daemon-reload
   sudo systemctl enable sensemenu.service
-  sudo systemctl start sensemenu.service  
+  sudo systemctl start sensemenu.service
