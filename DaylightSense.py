@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#This code is AI generated
 import time
 import math
 from sense_hat import SenseHat
