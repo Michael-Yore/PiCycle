@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+#this script is AI generated
 import os
 import time
 import math
